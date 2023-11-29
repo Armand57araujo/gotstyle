@@ -23,20 +23,17 @@ module.exports = () => {
         fingerprints: false,
         name: 'Your App Name',
         short_name: 'Short Name',
-        start_url: '/',
+        start_url: './',
+        publicPath: './',
         background_color: '#ffffff',
         theme_color: '#000000',
         icons: [
           {
             src: path.resolve('src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512],
-            destination: path.join('logo'),
+            destination: path.join('assets', 'icons'),
           },
         ],
-        description: 'Your app description',
-        publicPath: '/',
-        inject: true,
-        fingerprints: false,
       }),
       new InjectManifest({
         swSrc: './src-sw.js', // Input service worker file name
@@ -49,6 +46,10 @@ module.exports = () => {
         {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
+        },
+        {
+          test: /\.(png|svg|jpg|jpeg|gif)$/i,
+          type: 'asset/resource',
         },
         {
           test: /\.js$/,
