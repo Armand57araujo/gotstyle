@@ -38,8 +38,8 @@ module.exports = () => {
         fingerprints: false,
       }),
       new InjectManifest({
-        swSrc: './src/sw.js', // Input service worker file name
-        swDest: 'service-worker.js', // Output service worker file name
+        swSrc: './src-sw.js', // Input service worker file name
+        swDest: 'src-sw.js', // Output service worker file name
       }),
     ],
 
