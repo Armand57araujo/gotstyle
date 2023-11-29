@@ -30,6 +30,7 @@ const imagesCache = new StaleWhileRevalidate({
   ],
 });
 
+
 // Register routes for different asset types
 registerRoute(
   /\.(?:js|css)$/,
