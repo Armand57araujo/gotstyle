@@ -27,9 +27,9 @@ module.exports = () => {
         theme_color: '#000000',
         icons: [
           {
-            src: path.resolve('src/assets/icon.png'),
+            src: path.resolve('src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512],
-            destination: path.join('icons'),
+            destination: path.join('logo'),
           },
         ],
         description: 'Your app description',
