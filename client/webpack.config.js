@@ -16,10 +16,11 @@ module.exports = () => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/index.html',
+        template: './index.html',
         filename: 'index.html',
       }),
       new WebpackPwaManifest({
+        fingerprints: false,
         name: 'Your App Name',
         short_name: 'Short Name',
         start_url: '/',
@@ -56,6 +57,10 @@ module.exports = () => {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
+              plugins: 
+              ['@babel/plugin-proposal-object-rest-spread',
+              '@babel/plugin-transform-runtime',
+            ],
             },
           },
         },
