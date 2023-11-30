@@ -23,30 +23,29 @@ export const putDb = async (content) => {
   const store = tx.objectStore('jate');
   const request = store.put({ id: 1, value: content});
   const result = await request; // Add the content to the store
-  console.log('Saved data', result);
-  await tx.done; // Ensure the transaction is completed
+  console.log('Saved data', result.value);
+ 
 };
 
 // Function to get content from the database by ID
-export const getDb = async (id) => {
+export const getDb = async () => {
   const textdb = await openDB('jate', 1);
   const tx = textdb.transaction('jate', 'readonly');
   const store = tx.objectStore('jate');
   const request = store.get(1); // Get content by ID
   const result = await request; // Retrieve the content
-  await tx.done; // Ensure the transaction is completed
 
   return result?.value; // Return the retrieved content
 };
 
 // Usage example:
 // Add content to the database
-const contentToAdd = { id: 1, info: 'Some information' };
-putDb(contentToAdd);
+// const contentToAdd = { id: 1, info: 'Some information' };
+// putDb(contentToAdd);
 
 // Get content from the database by ID
-const retrievedContent = await getDb(1);
-console.log('Retrieved content:', retrievedContent);
+// const retrievedContent = await getDb(1);
+// console.log('Retrieved content:', retrievedContent);
 
 // Initialize the database
 initdb();

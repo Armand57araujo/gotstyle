@@ -1,3 +1,4 @@
+const {warmStrategyCache} = require('workbox-recipes');
 const { CacheFirst, StaleWhileRevalidate } = require('workbox-strategies');
 const { registerRoute } = require('workbox-routing');
 const { CacheableResponsePlugin } = require('workbox-cacheable-response');
@@ -7,17 +8,20 @@ const { precacheAndRoute } = require('workbox-precaching/precacheAndRoute');
 precacheAndRoute(self.__WB_MANIFEST);
 
 // Cache strategy for CSS and JavaScript files
-const assetsCache = new CacheFirst({
-  cacheName: 'assets-cache',
+const pageCache = new CacheFirst({
+  cacheName: 'page-cache',
   plugins: [
     new CacheableResponsePlugin({
       statuses: [0, 200],
     }),
     new ExpirationPlugin({
-      maxEntries: 50, // Max number of entries to cache
       maxAgeSeconds: 7 * 24 * 60 * 60, // Cache for 7 days
     }),
   ],
+});
+warmStrategyCache({
+  urls: ['/index.html', '/'],
+  strategy: pageCache,
 });
 
 // Cache strategy for images
@@ -30,18 +34,23 @@ const imagesCache = new StaleWhileRevalidate({
   ],
 });
 
-
-// Register routes for different asset types
 registerRoute(
-  /\.(?:js|css)$/,
-  ({ request }) => {
-    return assetsCache.handle({ request });
-  }
+  ({ request }) => request.mode === 'navigate', 
+  pageCache
 );
-
+// Set up asset cache
 registerRoute(
-  /\.(?:png|jpg|jpeg|svg|gif)$/,
-  ({ request }) => {
-    return imagesCache.handle({ request });
-  }
+  // Here we define the callback function that will filter the requests we want to cache (in this case, JS and CSS files)
+  ({ request }) => ['style', 'script', 'worker'].includes(request.destination),
+  new StaleWhileRevalidate({
+    // Name of the cache storage.
+    cacheName: 'asset-cache',
+    plugins: [
+      // CacheableResponsePlugin is used to configure which response statuses are considered cacheable. 
+      // In this case, responses with status codes 0 (offline) and 200 (OK) are considered cacheable.
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ],
+  })
 );

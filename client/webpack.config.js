@@ -17,14 +17,19 @@ module.exports = () => {
     plugins: [
       new HtmlWebpackPlugin({
         template: './index.html',
-        filename: 'index.html',
+        filename: 'J.A.T.E'
+      }),
+      new InjectManifest({
+        swSrc: './src-sw.js', // Input service worker file name
+        swDest: 'src-sw.js', // Output service worker file name
       }),
       new WebpackPwaManifest({
         fingerprints: false,
-        name: 'Your App Name',
-        short_name: 'Short Name',
-        start_url: './',
-        publicPath: './',
+        inject: true,
+        name: 'Just Another Text Editor',
+        short_name: 'J.A.T.E',
+        start_url: '/',
+        publicPath: '/',
         background_color: '#ffffff',
         theme_color: '#000000',
         icons: [
@@ -35,10 +40,6 @@ module.exports = () => {
           },
         ],
       }),
-      new InjectManifest({
-        swSrc: './src-sw.js', // Input service worker file name
-        swDest: 'src-sw.js', // Output service worker file name
-      }),
     ],
 
     module: {
@@ -46,10 +47,6 @@ module.exports = () => {
         {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
-        },
-        {
-          test: /\.(png|svg|jpg|jpeg|gif)$/i,
-          type: 'asset/resource',
         },
         {
           test: /\.m?js$/,
